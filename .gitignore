@@ -1,0 +1,34 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+Database.drawio.bkp
+../10_session 10/
+../1_Individual-Project-Assignment.docx
+../2_session 2/
+../4_session 4/
+../7_session 7/
+../Database.drawio
+../DemoSymfonyWeb.zip
+../Note.docx
+../Requirement.docx
+../demowebv2.docx
+../demowebv3.docx
+../~$mowebv3.docx
