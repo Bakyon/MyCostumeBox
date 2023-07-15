@@ -8,15 +8,15 @@
             <thead>
             <tr>
                 <th>Costume</th>
-                <th>Mô tả</th>
-                <th>Danh mục</th>
+                <th>Description</th>
+                <th>Category</th>
                 <th>Size</th>
-                <th>Trạng thái</th>
+                <th>Status</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            {% set status = ['Cho thuê', 'Rao bán'] %}
+            {% set status = ['For rent', 'For sale'] %}
             {% set size = ['S', 'SM', 'M', 'ML', 'L', 'XL'] %}
             {% for product in products %}
                 <tr>
@@ -26,9 +26,9 @@
                     <td>{{ size[product.size] }}</td>
                     <td>{{ status[product.status] }}</td>
                     <td>
-                        <a href="{{ path('app_products', {'id':product.id}) }}" class='btn btn-success'>View</a>
+                        <a href="{{ path('app_product_detail', {'id':product.id}) }}" class='btn btn-success'>View</a>
                         <a href="#" class='btn btn-default'>Edit</a>
-                        <a href="{{ path('app_products', {'id':product.id}) }}" class='btn btn-danger'>Delete</a>
+                        <a href="{{ path('app_product_delete', {'id':product.id}) }}" class='btn btn-danger'>Delete</a>
                     </td>
                 </tr>
             {% endfor %}

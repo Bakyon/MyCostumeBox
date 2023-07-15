@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label for="name">Costume:</label>
+        {{ form_widget(form.name,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Costume'
+            }
+        }) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.name) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="category">Category:</label>
+        {{ form_widget(form.category,{
+            'attr':{
+                'class':'form-control',
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        {{ form_widget(form.description,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Description'
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        <label for="description">Status:</label>
+        {{ form_widget(form.status,{
+            'attr':{
+                'class':'form-control',
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        <label for="priority">Size:</label>
+        {{ form_widget(form.size,{
+            'attr':{
+                'class':'form-control'
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        <label for="duedate">Owner fb link:</label>
+        {{ form_widget(form.owner,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Owner fb link'
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        <label for="duedate">Test/Sale price:</label>
+        {{ form_widget(form.price,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': '0'
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        <label for="duedate">Fes price: (Optional)</label>
+        {{ form_widget(form.priceFes,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': '0'
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        <label for="description">Upload image:</label>
+        {{ form_widget(form.image,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Image'
+            }
+        }) }}
+    </div>
+    <input type="submit" name="to_do_create" value="Create" class="btn btn-primary"/>
+    <input type="reset" value="Reset" class="btn btn-default"/>
+    <a href="{{ path('app_products') }}" class="btn btn-danger">Cancel</a>
+    {{ form_end(form) }}
+{% endblock %}

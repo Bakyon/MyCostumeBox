@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% set status = ['For rent', 'For sale'] %}
+    {% set size = ['S', 'SM', 'M', 'ML', 'L', 'XL'] %}
+    <a href="{{ path('app_products') }}" class="btn btn-default">Back to Costume List</a>
+    <hr/>
+    {% if product is not empty %}
+    <h2 class="page-header">{{ product.name }}</h2>
+    <ul class="list-group">
+        <li class="list-group-item">Category: {{ product.category.name }}</li>
+        <li class="list-group-item">Description: {{ product.description }}</li>
+        <li class="list-group-item">Size: {{ size[product.size] }}</li>
+        <li class="list-group-item">Owner fb link: <a href="{{ product.owner }}">{{ product.owner }}</a></li>
+        {% if (product.status == 0) %}
+        <li class="list-group-item">Test price: {{ product.price }}</li>
+        <li class="list-group-item">Fes price: {{ product.priceFes }}</li>
+        {% endif %}
+        {% if (product.status == 1) %}
+        <li class="list-group-item">Sale price: {{ product.price }}</li>
+        {% endif %}
+    </ul>
+    {% if product.image is not empty %}
+    <img class="img-thumbnail" src="{{ asset('Images/' ~ product.id ~ '/' ~ product.image) }}">
+    {% else %}
+    <li class="list-group-item">No images</li>
+    {% endif %}
+    {% endif %}
+{% endblock %}
