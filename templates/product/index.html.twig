@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop nhỏ của tiểu mặt trời{% endblock %}
+
+{% block body %}
+    <div class="bs-example" data-example-id="striped-table">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Costume</th>
+                <th>Mô tả</th>
+                <th>Danh mục</th>
+                <th>Size</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set status = ['Cho thuê', 'Rao bán'] %}
+            {% set size = ['S', 'SM', 'M', 'ML', 'L', 'XL'] %}
+            {% for product in products %}
+                <tr>
+                    <th scope="row">{{ product.name }}</th>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.category.name }}</td>
+                    <td>{{ size[product.size] }}</td>
+                    <td>{{ status[product.status] }}</td>
+                    <td>
+                        <a href="{{ path('app_products', {'id':product.id}) }}" class='btn btn-success'>View</a>
+                        <a href="#" class='btn btn-default'>Edit</a>
+                        <a href="{{ path('app_products', {'id':product.id}) }}" class='btn btn-danger'>Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -35,11 +35,11 @@ class Product
     private ?int $status = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $price_fes = null;
+    private ?int $priceFes = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category_id = null;
+    private ?Category $category = null;
 
     public function getId(): ?int
     {
@@ -132,24 +132,24 @@ class Product
 
     public function getPriceFes(): ?int
     {
-        return $this->price_fes;
+        return $this->priceFes;
     }
 
-    public function setPriceFes(?int $price_fes): static
+    public function setPriceFes(?int $priceFes): static
     {
-        $this->price_fes = $price_fes;
+        $this->priceFes = $priceFes;
 
         return $this;
     }
 
-    public function getCategoryId(): ?Category
+    public function getCategory(): ?Category
     {
-        return $this->category_id;
+        return $this->category;
     }
 
-    public function setCategoryId(?Category $category_id): static
+    public function setCategory(?Category $category): static
     {
-        $this->category_id = $category_id;
+        $this->category = $category;
 
         return $this;
     }
