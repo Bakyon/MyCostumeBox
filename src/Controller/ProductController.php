@@ -82,11 +82,6 @@ class ProductController extends AbstractController
                     );
                 }
                 $product->setImage($newImgName);
-            } else {
-                $this->addFlash(
-                    'error',
-                    'Cannot upload'
-                );
             }
             $em = $doctrine->getManager();
             $em->persist($product);
@@ -99,5 +94,53 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_products');
         }
         return $this->renderForm('product/create.html.twig', ['form' => $form]);
+    }
+
+    #[Route('/product/update/{id}', name: 'app_update_product')]
+    public function updateAction(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger, $id): Response
+    {
+        $product = $doctrine->getRepository('App\Entity\Product')->find($id);
+        $form = $this->createForm(ProductType::class, $product);
+
+        $form->handleRequest($request);
+
+        $uploadImg = $form['image']->getData();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Handle uploaded image if needed
+            if ($uploadImg) {
+                $destination = $this->getParameter('kernel.project_dir').'/public/Images';
+                $originalImgName = pathinfo($uploadImg->getClientOriginalName(), PATHINFO_FILENAME);
+                $newImgName = $slugger->slug($originalImgName).'-'.uniqid().'.'.$uploadImg->guessExtension();
+
+                try {
+                    $uploadImg->move(
+                        $destination,
+                        $newImgName
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash(
+                        'error',
+                        'Cannot upload'
+                    );
+                }
+                $product->setImage($newImgName);
+            }
+            $em = $doctrine->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Product updated!'
+            );
+            return $this->redirectToRoute('app_products');
+        }
+        return $this->renderForm(
+            'product/update.html.twig', [
+                'form' => $form,
+                'product' => $product
+            ]
+        );
     }
 }

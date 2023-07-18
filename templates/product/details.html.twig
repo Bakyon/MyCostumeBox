@@ -10,7 +10,7 @@
     </a>
     <hr/>
     {% if product is not empty %}
-    <h2 class="page-header">{{ product.name }}</h2>
+    <h2 class="page-header">{{ product.name }} - {{ status[product.status] }}</h2>
     <ul class="list-group">
         <li class="list-group-item">Category: {{ product.category.name }}</li>
         <li class="list-group-item">Description: {{ product.description }}</li>
