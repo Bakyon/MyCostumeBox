@@ -4,6 +4,10 @@
     {% set status = ['For rent', 'For sale'] %}
     {% set size = ['S', 'SM', 'M', 'ML', 'L', 'XL'] %}
     <a href="{{ path('app_products') }}" class="btn btn-default">Back to Costume List</a>
+    <a href="{{ path('app_product_delete', {'id':product.id}) }}" class='btn btn-danger'
+       onclick="return confirm('Are u sure?')">
+        Delete
+    </a>
     <hr/>
     {% if product is not empty %}
     <h2 class="page-header">{{ product.name }}</h2>
@@ -21,7 +25,7 @@
         {% endif %}
     </ul>
     {% if product.image is not empty %}
-    <img class="img-thumbnail" src="{{ asset('Images/' ~ product.id ~ '/' ~ product.image) }}">
+    <img class="img-thumbnail" src="{{ asset('Images/' ~ product.image) }}">
     {% else %}
     <li class="list-group-item">No images</li>
     {% endif %}
