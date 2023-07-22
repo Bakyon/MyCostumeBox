@@ -130,6 +130,13 @@ class ProductController extends AbstractController
                 $newImgName = $slugger->slug($originalImgName).'-'.uniqid().'.'.$uploadImg->guessExtension();
 
                 try {
+                    //remove existing image
+                    if (!is_null($product->getImage())) {
+                        $filesystem = new Filesystem();
+                        $currentImg = $this->getParameter('img_dir') . $product->getImage();
+                        $filesystem->remove($currentImg);
+                    }
+                    //upload new image to server
                     $uploadImg->move(
                         $destination,
                         $newImgName
@@ -140,6 +147,7 @@ class ProductController extends AbstractController
                         'Cannot upload image'
                     );
                 }
+                //set image name in database
                 $product->setImage($newImgName);
             }
             $em = $doctrine->getManager();
