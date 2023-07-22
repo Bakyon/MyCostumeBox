@@ -11,23 +11,60 @@
     <hr/>
     {% if product is not empty %}
     <h2 class="page-header">{{ product.name }} - {{ status[product.status] }}</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Category: {{ product.category.name }}</li>
-        <li class="list-group-item">Description: {{ product.description }}</li>
-        <li class="list-group-item">Size: {{ size[product.size] }}</li>
-        <li class="list-group-item">Owner fb link: <a href="{{ product.owner }}">{{ product.owner }}</a></li>
+    <div class="list-group">
+        <div class="list-group-item">Category: {{ product.category.name }}</div>
+        <div class="list-group-item">Size: {{ size[product.size] }}</div>
+        <div class="list-group-item">Description: {{ product.description }}</div>
+        <div class="list-group-item">Owner fb link: <a href="{{ product.owner }}">{{ product.owner }}</a></div>
         {% if (product.status == 0) %}
-        <li class="list-group-item">Test price: {{ product.price }}</li>
-        <li class="list-group-item">Fes price: {{ product.priceFes }}</li>
+            <div class="list-group-item">Test price: {{ product.price }} vnd</div>
+            <div class="list-group-item">Fes price: {{ product.priceFes }} vnd</div>
+        {% elseif (product.status == 1) %}
+            <div class="list-group-item">Sale price: {{ product.price }} vnd</div>
         {% endif %}
-        {% if (product.status == 1) %}
-        <li class="list-group-item">Sale price: {{ product.price }}</li>
-        {% endif %}
-    </ul>
-    {% if product.image is not empty %}
-    <img class="img-thumbnail" src="{{ asset('Images/' ~ product.image) }}">
-    {% else %}
-    <li class="list-group-item">No images</li>
-    {% endif %}
+    </div>
+    <!-- Image part -->
+    <div class="col-12 col-sm-9 col-md-6 col-lg-3">
+        <div class="card">
+            {% if product.image is not empty %}
+                <img class="card-img-top" src="{{ asset('Images/' ~ product.image) }}">
+            {% else %}
+                <img class="card-img-top" src="{{ asset('Images/No-Image-Available.jpg') }}">
+            {% endif %}
+        </div>
+    </div>
     {% endif %}
 {% endblock %}
+
+{#
+{% block body %}
+    {% set status = ['For rent', 'For sale'] %}
+    {% set size = ['S', 'SM', 'M', 'ML', 'L', 'XL'] %}
+    <a href="{{ path('app_products') }}" class="btn btn-default">Back to Costume List</a>
+    <a href="{{ path('app_product_delete', {'id':product.id}) }}" class='btn btn-danger'
+       onclick="return confirm('Are u sure?')">
+        Delete
+    </a>
+    <hr/>
+    {% if product is not empty %}
+        <h2 class="page-header">{{ product.name }} - {{ status[product.status] }}</h2>
+        <ul class="list-group">
+            <li class="list-group-item">Category: {{ product.category.name }}</li>
+            <li class="list-group-item">Description: {{ product.description }}</li>
+            <li class="list-group-item">Size: {{ size[product.size] }}</li>
+            <li class="list-group-item">Owner fb link: <a href="{{ product.owner }}">{{ product.owner }}</a></li>
+            {% if (product.status == 0) %}
+                <li class="list-group-item">Test price: {{ product.price }}</li>
+                <li class="list-group-item">Fes price: {{ product.priceFes }}</li>
+            {% endif %}
+            {% if (product.status == 1) %}
+                <li class="list-group-item">Sale price: {{ product.price }}</li>
+            {% endif %}
+        </ul>
+        {% if product.image is not empty %}
+            <img class="img-thumbnail" src="{{ asset('Images/' ~ product.image) }}">
+        {% else %}
+            <li class="list-group-item">No images</li>
+        {% endif %}
+    {% endif %}
+{% endblock %}#}

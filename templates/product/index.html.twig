@@ -3,40 +3,56 @@
 {% block title %}Shop nhỏ của tiểu mặt trời{% endblock %}
 
 {% block body %}
-    <div class="bs-example" data-example-id="striped-table">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Costume</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Size</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
+    <!-- Products -->
+    <div class="container text-center">
+        <div class="row">
             {% set status = ['For rent', 'For sale'] %}
             {% set size = ['S', 'SM', 'M', 'ML', 'L', 'XL'] %}
             {% for product in products %}
-                <tr>
-                    <th scope="row">{{ product.name }}</th>
-                    <td>{{ product.description }}</td>
-                    <td>{{ product.category.name }}</td>
-                    <td>{{ size[product.size] }}</td>
-                    <td>{{ status[product.status] }}</td>
-                    <td>
+            <!-- Product card -->
+            <div class="col-12 col-sm-9 col-md-6 col-lg-3">
+                <div class="card">
+                    <!-- Image part -->
+                    {% if product.image is not empty %}
+                        <img class="card-img-top" src="{{ asset('Images/' ~ product.image) }}">
+                    {% else %}
+                        <img class="card-img-top" src="{{ asset('Images/No-Image-Available.jpg') }}">
+                    {% endif %}
+                    <!-- Body part -->
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-info fs-4 col-sm-4">{{ product.category.name }}</div>
+                            <div class="text-secondary fs-5 col-sm-8    ">Size: {{ size[product.size] }}</div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-info fs-4 col-sm-4">{{ status[product.status] }}</div>
+                            <div class="text-secondary fs-5 col-sm-8">
+                                {% if (product.status == 0) %}
+                                    <div>{{ product.price }}/{{ product.priceFes }} vnd</div>
+                                {% endif %}
+                                {% if (product.status == 1) %}
+                                    <div>{{ product.price }} vnd</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </ul>
+                    <!-- Button part -->
+                    <div class="card-body">
                         <a href="{{ path('app_product_detail', {'id':product.id}) }}" class='btn btn-success'>View</a>
-                        <a href="{{ path('app_update_product', {'id':product.id}) }}" class='btn btn-default'>Update</a>
+                        <a href="{{ path('app_update_product', {'id':product.id}) }}" class='btn btn-primary'>Update</a>
                         <a href="{{ path('app_product_delete', {'id':product.id}) }}" class='btn btn-danger'
-                           onclick="return confirm('Are u sure?')">
+                           onclick="return confirm('Do you really want to remove this product? ' +
+                           'This action cannot be undone!')">
                             Delete
                         </a>
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Product card -->
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
     </div>
-
 {% endblock %}

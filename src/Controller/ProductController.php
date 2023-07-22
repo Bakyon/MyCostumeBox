@@ -6,11 +6,13 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use function Symfony\Component\DomCrawler\image;
 
 class ProductController extends AbstractController
 {
@@ -40,8 +42,18 @@ class ProductController extends AbstractController
     #[Route('/product/delete/{id}', name: 'app_product_delete')]
     public function deleteAction(ManagerRegistry $doctrine, $id): Response
     {
+        //get Product
         $em =$doctrine->getManager();
         $product = $em->getRepository('App\Entity\Product')->find($id);
+
+        //remove image from server if exists
+        if (!is_null($product.image())) {
+            $filesystem = new Filesystem();
+            $currentImg = '%kernel.project_dir%/public/Images/' . $product.image();
+            $filesystem->remove($currentImg);
+        }
+
+        //remove Product info from database
         $em->remove($product);
         $em->flush();
 

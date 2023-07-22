@@ -12,7 +12,12 @@
     <title>{% block title %}Shop nhỏ của tiểu mặt trời{% endblock %}</title>
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    {% block stylesheets %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+    {% block stylesheets %}
+        <link href="{{ asset('CSS/bootstrap.customize.css') }}" rel="stylesheet">
+    {% endblock %}
 </head>
 
 <body>
