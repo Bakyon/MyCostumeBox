@@ -47,10 +47,14 @@ class ProductController extends AbstractController
         $product = $em->getRepository('App\Entity\Product')->find($id);
 
         //remove image from server if exists
-        if (!is_null($product.image())) {
+        if (!is_null($product->getImage())) {
             $filesystem = new Filesystem();
-            $currentImg = '%kernel.project_dir%/public/Images/' . $product.image();
+            $currentImg = $this->getParameter('img_dir') . $product->getImage();
             $filesystem->remove($currentImg);
+            $this->addFlash(
+                'error',
+                'Image '.$product->getImage(). ' removed!'
+            );
         }
 
         //remove Product info from database
@@ -133,7 +137,7 @@ class ProductController extends AbstractController
                 } catch (FileException $e) {
                     $this->addFlash(
                         'error',
-                        'Cannot upload'
+                        'Cannot upload image'
                     );
                 }
                 $product->setImage($newImgName);
