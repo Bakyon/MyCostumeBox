@@ -704,3 +704,6 @@
 .card {
     margin-bottom: 25px;
 }
+.login-out-button {
+    float: right;
+}

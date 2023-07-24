@@ -13,6 +13,14 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
+        //redirect the user if the user is not admin
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true)) {
+            $this->addFlash(
+                'error',
+                'Access denied!'
+            );
+            return $this->redirectToRoute('app_products');
+        }
         return parent::index();
 
         // Option 1. You can make your dashboard redirect to some common page of your backend

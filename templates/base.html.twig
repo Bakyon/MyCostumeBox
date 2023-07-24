@@ -35,10 +35,21 @@
             <a class="navbar-brand" href="{{ path('app_products') }}">Shop nhỏ của tiểu mặt trời</a>
         </div>
 
-        <div id="navbar" class="collapse navbar-collapse">
+        <div id="navbar" class="collapse nav navbar-nav navbar-collapse container-fluid">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ path('app_products') }}">Home</a></li>
                 <li><a href="{{ path('app_new_product') }}">Add new Costume</a></li>
+            </ul>
+            <ul class="nav navbar-nav justify-content-end">
+                {% if is_granted('ROLE_USER') %}
+                    <li><a href="{{ path('app_profile', {'username':app.user.username}) }}">Hi {{ app.user.username }}</a></li>
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                {% elseif is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('app_admin', {'username':app.user.username}) }}">Hi admin {{ app.user.username }}</a></li>
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a class="login-out-button" href="{{ path('app_login') }}">Login</a></li>
+                {% endif %}
             </ul>
         </div> <!-- /.nav-collapse -->
     </div>
