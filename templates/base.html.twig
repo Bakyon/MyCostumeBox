@@ -35,12 +35,12 @@
             <a class="navbar-brand" href="{{ path('app_products') }}">Shop nhỏ của tiểu mặt trời</a>
         </div>
 
-        <div id="navbar" class="collapse nav navbar-nav navbar-collapse container-fluid">
+        <div id="navbar" class="collapse nav navbar-collapse container-fluid">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ path('app_products') }}">Home</a></li>
                 <li><a href="{{ path('app_new_product') }}">Add new Costume</a></li>
             </ul>
-            <ul class="nav navbar-nav justify-content-end">
+            <ul class="nav navbar-nav navbar-right">
                 {% if is_granted('ROLE_USER') %}
                     <li><a href="{{ path('app_profile', {'username':app.user.username}) }}">Hi {{ app.user.username }}</a></li>
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
