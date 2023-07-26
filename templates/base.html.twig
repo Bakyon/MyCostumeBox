@@ -48,7 +48,8 @@
                     <li><a href="{{ path('app_profile', {'username':app.user.username}) }}">Hi {{ app.user.username }}</a></li>
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
                 {% else %}
-                    <li><a class="login-out-button" href="{{ path('app_login') }}">Login</a></li>
+                    <li><a href="{{ path('app_login') }}">Login</a></li>
+                    <li><a href="{{ path('app_user_register') }}">Sign up</a></li>
                 {% endif %}
             </ul>
         </div> <!-- /.nav-collapse -->

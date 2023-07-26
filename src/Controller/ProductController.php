@@ -22,9 +22,28 @@ class ProductController extends AbstractController
     {
         //$products = $doctrine->getRepository('App\Entity\Product')->findAll();
         $products = $doctrine->getRepository('App\Entity\Product')->findAll();
+        $categories = $doctrine->getRepository('App\Entity\Category')->findAll();
+        $category = "";
         return $this->render('product/index.html.twig', [
             'controller_name' => 'ProductController',
-            'products' => $products
+            'products' => $products,
+            'categories' => $categories,
+            'category' => $category
+        ]);
+    }
+
+    #[Route('/products/{catid}', name: 'app_products_by_cate')]
+    public function productsByCate(ManagerRegistry $doctrine, $catid): Response
+    {
+        //$products = $doctrine->getRepository('App\Entity\Product')->findAll();
+        $products = $doctrine->getRepository('App\Entity\Product')->findBy(array('category' => $catid));
+        $categories = $doctrine->getRepository('App\Entity\Category')->findAll();
+        $category = $doctrine->getRepository('App\Entity\Category')->find($catid);
+        return $this->render('product/index.html.twig', [
+            'controller_name' => 'ProductController',
+            'products' => $products,
+            'categories' => $categories,
+            'category' => $category
         ]);
     }
 

@@ -3,6 +3,42 @@
 {% block title %}Shop nhỏ của tiểu mặt trời{% endblock %}
 
 {% block body %}
+    <!-- Category card -->
+    {% if category is empty %}
+        {% set selected = 0 %}
+    {% else %}
+        {% set selected = category.id %}
+    {% endif %}
+    <div class="container-fluid text-center">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header ">
+                    <div class="navbar-brand">Category:</div>
+                </div>
+
+                <div id="navbar" class="collapse nav navbar-collapse container-fluid">
+                    <ul class="nav navbar-nav">
+                        {% if selected == 0 %}
+                            <li class="active">
+                        {% else %}
+                            <li>
+                        {% endif %}
+                         <a href="{{ path('app_products') }}">All</a></li>
+
+                        {% for cate in categories %}
+                        {% if selected == cate.id %}
+                            <li class="active">
+                        {% else %}
+                            <li>
+                        {% endif %}
+                            <a href="{{ path('app_products_by_cate', {'catid':cate.id}) }}">{{ cate.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div> <!-- /.nav-collapse -->
+            </div>
+        </nav>
+    </div>
+
     <!-- Products -->
     <div class="container text-center">
         <div class="row">

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label for="name">Username:</label>
+        {{ form_widget(form.username,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Ex. along123'
+            }
+        }) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.username) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_row(form.password.first,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Password'
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.password.second,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Re-type password'
+            }
+        }) }}
+    </div>
+    <input type="submit" name="to_do_create" value="Create" class="btn btn-primary"/>
+    <input type="reset" value="Reset" class="btn btn-default"/>
+    <a href="{{ path('app_products') }}" class="btn btn-danger">Cancel</a>
+    {{ form_end(form) }}
+{% endblock %}
