@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <!-- Dashboard menu -->
+    <div class="container-fluid text-center">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header ">
+                    <div class="navbar-brand">Dashboard</div>
+                </div>
+
+                <div id="nav" class="collapse nav navbar-collapse container-fluid">
+                    <ul class="nav navbar-nav">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li{% if accType == "user" %} class="active"{% endif %}>
+                                <a href="{{ path('app_dashboard') }}">All accounts</a>
+                            </li>
+                        {% endif %}
+                        <li{% if accType == "user" %} class="active"{% endif %}>
+                            <a href="{{ path('app_accounts', {'accType': 'user'}) }}">Users</a>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li{% if accType == "mod" %} class="active"{% endif %}>
+                                <a href="{{ path('app_accounts', {'accType': 'mod'}) }}">Mod</a>
+                            </li>
+                        {% endif %}
+                        <li><a href="{{ path('app_profile') }}">My profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Account info -->
+    <div class="bs-example" data-example-id="striped-table">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for acc in accounts %}
+                {% set role = acc.getRoles() %}
+                {% if "ROLE_MOD" in role %}
+                    {% set role = "Moderator" %}
+                {%  endif %}
+                {% if "ROLE_USER" in role %}
+                    {% set role = "User" %}
+                {% endif %}
+                <tr>
+                    <th scope="row">{{ acc.id }}</th>
+                    <td>{{ acc.username }}</td>
+                    <td>{{ role }}</td>
+                    <td>
+                        <a href="#" class='btn btn-success'>Change password</a>   <!-- change # into update password route -->
+                        <a href="#" class='btn btn-danger'
+                           onclick="return confirm('Do you really want to remove this account? ' +
+                               'This action cannot be undone!')">
+                            Delete
+                        </a>    <!-- change # into delete user route -->
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

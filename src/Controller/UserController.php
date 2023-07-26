@@ -62,4 +62,25 @@ class UserController extends AbstractController
             return true;
         }
     }
+
+    #[Route('admin/dashboard', name: 'app_dashboard')]
+    public function dashboard(ManagerRegistry $doctrine): Response {
+        $accounts = $doctrine->getRepository('App\Entity\User')->findAllNotAdmin();
+
+        $accType = "";
+        return $this->render('security/dashboard.html.twig', [
+            'accType' => $accType,
+            'accounts' => $accounts
+        ]);
+    }
+
+    #[Route('/admin/dashboard/{accType}', name: 'app_accounts')]
+    public function accountDashboard(ManagerRegistry $doctrine, $accType): Response {
+        $accType = "%".$accType."%";
+        $accounts = $doctrine->getRepository('App\Entity\User')->findByRole($accType);
+        return $this->render('security/dashboard.html.twig', [
+            'accType' => $accType,
+            'accounts' => $accounts
+        ]);
+    }
 }

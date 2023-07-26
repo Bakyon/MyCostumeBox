@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -13,15 +14,7 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        //redirect the user if the user is not admin
-        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true)) {
-            $this->addFlash(
-                'error',
-                'Access denied!'
-            );
-            return $this->redirectToRoute('app_products');
-        }
-        return parent::index();
+        return $this->redirectToRoute('app_dashboard');
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -48,7 +41,8 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToRoute('Back to main page', 'fas fa-angle-left', 'app_products');
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('User', 'fas fa-list', Product::class);
     }
 }

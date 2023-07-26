@@ -30,6 +30,8 @@ security:
                 path: /
                 always_remember_me: true
 
+            access_denied_handler: App\Security\AccessDeniedHandler
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -38,15 +40,14 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    # IS_AUTHENTICATED_ANONYMOUS, IS_AUTHENTICATED_FULLY, ROLE_USER, ROLE_ADMIN
+    # IS_AUTHENTICATED_ANONYMOUS, IS_AUTHENTICATED_FULLY, ROLE_USER, ROLE_ADMIN, ROLE_MOD
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/logout, roles: ROLE_USER }
-        - { path: ^/product/new, roles: ROLE_USER }
-        - { path: ^/product/delete, roles: ROLE_USER }
-        - { path: ^/product/update, roles: ROLE_USER }
-        - { path: ^/admin, roles: ROLE_USER }
-        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/product/new, roles: [ROLE_ADMIN, ROLE_MOD] }
+        - { path: ^/product/delete, roles: [ROLE_ADMIN, ROLE_MOD] }
+        - { path: ^/product/update, roles: [ROLE_ADMIN, ROLE_MOD] }
+        - { path: ^/admin/dashboard/mod, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_MOD] }
+        - { path: ^/profile, roles: [ROLE_USER] }
 
 when@test:
     security:

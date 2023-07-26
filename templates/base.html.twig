@@ -38,7 +38,7 @@
         <div id="navbar" class="collapse nav navbar-collapse container-fluid">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ path('app_products') }}">Home</a></li>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MOD') %}
                     <li><a href="{{ path('app_new_product') }}">Add new Costume</a></li>
                 {% endif %}
             </ul>
@@ -46,8 +46,11 @@
                 {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ path('admin', {'username':app.user.username}) }}">Hi admin {{ app.user.username }}</a></li>
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                {% elseif is_granted('ROLE_MOD') %}
+                    <li><a href="{{ path('admin', {'username':app.user.username}) }}">Hi moderator {{ app.user.username }}</a></li>
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
                 {% elseif is_granted('ROLE_USER') %}
-                    <li><a href="{{ path('app_profile', {'username':app.user.username}) }}">Hi {{ app.user.username }}</a></li>
+                    <li><a href="{{ path('app_profile') }}">Hi {{ app.user.username }}</a></li>
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
                 {% else %}
                     <li><a href="{{ path('app_login') }}">Login</a></li>
