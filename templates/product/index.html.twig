@@ -78,12 +78,14 @@
                     <!-- Button part -->
                     <div class="card-body">
                         <a href="{{ path('app_product_detail', {'id':product.id}) }}" class='btn btn-success'>View</a>
-                        <a href="{{ path('app_update_product', {'id':product.id}) }}" class='btn btn-primary'>Update</a>
-                        <a href="{{ path('app_product_delete', {'id':product.id}) }}" class='btn btn-danger'
-                           onclick="return confirm('Do you really want to remove this product? ' +
-                           'This action cannot be undone!')">
-                            Delete
-                        </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_update_product', {'id':product.id}) }}" class='btn btn-primary'>Update</a>
+                            <a href="{{ path('app_product_delete', {'id':product.id}) }}" class='btn btn-danger'
+                               onclick="return confirm('Do you really want to remove this product? ' +
+                               'This action cannot be undone!')">
+                                Delete
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
