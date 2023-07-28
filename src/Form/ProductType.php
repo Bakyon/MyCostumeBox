@@ -39,8 +39,8 @@ class ProductType extends AbstractType
             ->add('price', NumberType::class)
             ->add('status', choiceType::class, [
                 'choices' => [
-                    'Cho thuê' => 0,
-                    'Rao bán' => 1
+                    'For rent' => 0,
+                    'For sale' => 1
                 ]
             ])
             ->add('priceFes', NumberType::class)

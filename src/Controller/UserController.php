@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserInfo;
+use App\Form\UserInfoType;
 use App\Form\UserType;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -31,7 +34,7 @@ class UserController extends AbstractController
             if ($this->userExisted($doctrine, $username)) {
                 $this->addFlash(
                     'notice',
-                    'Username already exited! Please choose another one!'
+                    'Username '.$username.' already exited! Please choose another one!'
                 );
                 return $this->redirectToRoute('app_user_register');
             } else {
@@ -55,12 +58,12 @@ class UserController extends AbstractController
     }
 
     private function userExisted(ManagerRegistry $doctrine, $username) {
-        $check = $doctrine->getRepository('App\Entity\User')->findBy(array('username' => $username));
-        if (is_null($check)) {
-            return false;
-        } else {
-            return true;
+        $accounts = $doctrine->getRepository('App\Entity\User')->findAll();
+        $check = false;
+        foreach ($accounts as $acc) {
+            if ($acc->getUsername() == $username) $check = true;
         }
+        return $check;
     }
 
     #[Route('admin/dashboard', name: 'app_dashboard')]
@@ -81,6 +84,107 @@ class UserController extends AbstractController
         return $this->render('security/dashboard.html.twig', [
             'accType' => $accType,
             'accounts' => $accounts
+        ]);
+    }
+
+    #[Route('/admin/dashboard/delete/{id}', name: 'app_acc_delete')]
+    public function deleteAcc(ManagerRegistry $doctrine, $id): Response
+    {
+        //get Account
+        $em = $doctrine->getManager();
+        $acc = $em->getRepository('App\Entity\User')->find($id);
+
+        if (!is_null($acc)) {
+            //remove Account info from database
+            $em->remove($acc);
+            $em->flush();
+
+            $this->addFlash(
+                'error',
+                'Account deleted!'
+            );
+        } else {
+            $this->addFlash(
+                'error',
+                'Account not existed!'
+            );
+        }
+
+        return $this->redirectToRoute('app_dashboard');
+    }
+
+    #[Route('/profile/changepw', name: 'app_pw_change')]
+    public function changePWAction(ManagerRegistry $doctrine, Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        //get Account
+        $acc = $this->getUser();
+        $form = $this->createForm(UserType::class, $acc);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plainTextPW = $form->get('password')->getData();
+            $hashedPW = $passwordHasher->hashPassword($acc, $plainTextPW);
+            $acc->setPassword($hashedPW);
+
+            $em = $doctrine->getManager();
+            $em->persist($acc);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Password is successfully changed successfully!'
+            );
+            return $this->redirectToRoute('app_profile');
+        }
+        return $this->renderForm('user/changepw.html.twig', ['form' => $form, 'user' => $acc]);
+    }
+
+    #[Route('/admin/dashboard/resetpw/{id}', name: 'app_pw_reset')]
+    public function resetpwAction(ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, $id): Response
+    {
+        $user = $doctrine->getRepository('App\Entity\User')->find($id);
+        $plainTextPW = "000000";
+        $hashedPW = $passwordHasher->hashPassword($user, $plainTextPW);
+        $user->setPassword($hashedPW);
+
+        $em = $doctrine->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Password is reset successfully successfully!'
+        );
+        return $this->redirectToRoute('app_dashboard');
+    }
+
+    #[Route('/profile/updateinfo', name: 'app_accinfo_update')]
+    public function updateInfoAccount(ManagerRegistry $doctrine, Request $request): Response
+    {
+        $user = $this->getUser();
+        $info = $user->getUserInfo();
+        if (!$info)
+            $info = new UserInfo();
+        $form = $this->createForm(UserInfoType::class, $info);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $info->setUser($user);
+            $em = $doctrine->getManager();
+            $em->persist($info);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Update successfully!'
+            );
+            return $this->redirectToRoute('app_profile');
+        }
+        return $this->renderForm('user/updateInfo.html.twig', [
+            'form' => $form,
+            'info' => $info
         ]);
     }
 }

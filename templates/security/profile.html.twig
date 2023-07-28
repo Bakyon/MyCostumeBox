@@ -1,1 +1,19 @@
 {% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="page-header">Welcome {{ user.username }}</h2>
+    <div class="list-group">
+        <div class="list-group-item">Name: {{ user.userInfo.name }}</div>
+        <div class="list-group-item">Phone: {{ user.userInfo.phone }}</div>
+        <div class="list-group-item">Email: {{ user.userInfo.email }}</div>
+        <div class="list-group-item">Address: {{ user.userInfo.address }}</div>
+        <div>
+            <a href="{{ path('app_accinfo_update') }}">
+                <input type="submit" name="to_do_create" value="Update Info" class="btn btn-success"/>
+            </a>
+            <a href="{{ path('app_pw_change') }}">
+                <input type="submit" name="to_do_create" value="Change password" class="btn btn-danger"/>
+            </a>
+        </div>
+    </div>
+{% endblock %}

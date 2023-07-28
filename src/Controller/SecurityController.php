@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-//use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -33,12 +33,47 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/profile', name: 'app_profile')]
-    public function profilePage(ManagerRegistry $doctrine): Response {
+    public function profilePage(): Response {
         $user = $this->getUser();
-        //$user = $doctrine->getRepository('App\Entity\User')->findBy(array('username' => $username));
-        return $this->render('security/profile.html.twig', [
-                'user' => $user
-            ]
+        if ($user->getUserInfo()) {
+            return $this->render('security/profile.html.twig', [
+                    'user' => $user
+                ]
+            );
+        } else {
+            return $this->redirectToRoute('app_accinfo_update');
+        }
+    }
+
+    #[Route(path: '/admin/dashboard/promote/{id}', name: 'app_promote')]
+    public function promoteAction(ManagerRegistry $doctrine, $id): Response
+    {
+        $user = $doctrine->getRepository('App\Entity\User')->find($id);
+        $user->setRoles(["ROLE_MOD"]);
+        $em = $doctrine->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Promote successfully!'
         );
+        return $this->redirectToRoute('app_dashboard');
+    }
+
+    #[Route(path: '/admin/dashboard/demote/{id}', name: 'app_demote')]
+    public function demoteAction(ManagerRegistry $doctrine, $id): Response
+    {
+        $user = $doctrine->getRepository('App\Entity\User')->find($id);
+        $user->setRoles(["ROLE_USER"]);
+        $em = $doctrine->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Demote successfully!'
+        );
+        return $this->redirectToRoute('app_dashboard');
     }
 }

@@ -46,6 +46,7 @@ security:
         - { path: ^/product/delete, roles: [ROLE_ADMIN, ROLE_MOD] }
         - { path: ^/product/update, roles: [ROLE_ADMIN, ROLE_MOD] }
         - { path: ^/admin/dashboard/mod, roles: ROLE_ADMIN }
+        - { path: ^/admin/dashboard/promote, roles: ROLE_ADMIN }
         - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_MOD] }
         - { path: ^/profile, roles: [ROLE_USER] }
 

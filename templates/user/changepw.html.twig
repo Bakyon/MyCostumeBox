@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="page-header">Change password</h2>
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label for="name">Username:</label>
+        {{ form_widget(form.username,{
+            'attr':{
+                'class':'form-control',
+                'value': user.username,
+                'disabled': true
+            }
+        }) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.username) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_row(form.password.first,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'New password'
+            }
+        }) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.password.second,{
+            'attr':{
+                'class':'form-control',
+                'placeholder': 'Re-type new password'
+            }
+        }) }}
+    </div>
+    <input type="submit" name="to_do_create" value="Change password" class="btn btn-primary"/>
+    <a href="{{ path('app_profile') }}" class="btn btn-danger">Cancel</a>
+    {{ form_end(form) }}
+{% endblock %}

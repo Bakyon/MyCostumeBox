@@ -58,12 +58,26 @@
                     <td>{{ acc.username }}</td>
                     <td>{{ role }}</td>
                     <td>
-                        <a href="#" class='btn btn-success'>Change password</a>   <!-- change # into update password route -->
-                        <a href="#" class='btn btn-danger'
-                           onclick="return confirm('Do you really want to remove this account? ' +
+                        <a href="{{ path('app_pw_reset', {'id': acc.id}) }}" class='btn btn-info'>Reset password</a>
+                        <a href="{{ path('app_acc_delete', {'id': acc.id}) }}" class='btn btn-danger'
+                           onclick="return confirm('Do you really want to remove this account ({{ acc.username }})? ' +
                                'This action cannot be undone!')">
                             Delete
-                        </a>    <!-- change # into delete user route -->
+                        </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {% if role == "User" %}
+                                <a href="{{ path('app_promote', {'id': acc.id}) }}" class='btn btn-success'
+                                   onclick="return confirm('Do you really want to promote this account ({{ acc.username }})?')">
+                                    Promote
+                                </a>
+                            {% endif %}
+                            {% if role == "Moderator" %}
+                                <a href="{{ path('app_demote', {'id': acc.id}) }}" class='btn btn-success'
+                                   onclick="return confirm('Do you really want to demote this account ({{ acc.username }})?')">
+                                    Demote
+                                </a>
+                            {% endif %}
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
