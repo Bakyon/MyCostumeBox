@@ -200,13 +200,4 @@ class ProductController extends AbstractController
             ]
         );
     }
-
-    #[Route('/access-denied', name: 'app_access_denied')]
-    public function accessDenied() {
-        $this->addFlash(
-            'error',
-            'Access denied!'
-        );
-        return $this->redirectToRoute('app_products');
-    }
 }

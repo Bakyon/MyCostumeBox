@@ -66,7 +66,7 @@ class UserController extends AbstractController
         return $check;
     }
 
-    #[Route('admin/dashboard', name: 'app_dashboard')]
+    #[Route('/admin', name: 'app_dashboard')]
     public function dashboard(ManagerRegistry $doctrine): Response {
         $role = $this->getUser()->getRoles();
         if (!in_array("ROLE_ADMIN", $role)) {
@@ -81,8 +81,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/dashboard/{accType}', name: 'app_accounts')]
-    public function accountDashboard(ManagerRegistry $doctrine, $accType): Response {
+    #[Route('/admin/{accType}', name: 'app_accounts')]
+    public function dashboardByAccType(ManagerRegistry $doctrine, $accType): Response {
         $accType = "%".$accType."%";
         $accounts = $doctrine->getRepository('App\Entity\User')->findByRole($accType);
         return $this->render('security/dashboard.html.twig', [
@@ -91,7 +91,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/dashboard/delete/{id}', name: 'app_acc_delete')]
+    #[Route('/admin/delete/{id}', name: 'app_acc_delete')]
     public function deleteAcc(ManagerRegistry $doctrine, $id): Response
     {
         //get Account
@@ -144,7 +144,7 @@ class UserController extends AbstractController
         return $this->renderForm('user/changepw.html.twig', ['form' => $form, 'user' => $acc]);
     }
 
-    #[Route('/admin/dashboard/resetpw/{id}', name: 'app_pw_reset')]
+    #[Route('/admin/resetpw/{id}', name: 'app_pw_reset')]
     public function resetpwAction(ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, $id): Response
     {
         $user = $doctrine->getRepository('App\Entity\User')->find($id);
