@@ -68,6 +68,10 @@ class UserController extends AbstractController
 
     #[Route('admin/dashboard', name: 'app_dashboard')]
     public function dashboard(ManagerRegistry $doctrine): Response {
+        $role = $this->getUser()->getRoles();
+        if (!in_array("ROLE_ADMIN", $role)) {
+            return $this->redirectToRoute('app_accounts', array('accType' => 'user'));
+        }
         $accounts = $doctrine->getRepository('App\Entity\User')->findAllNotAdmin();
 
         $accType = "";
