@@ -81,7 +81,7 @@
                         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MOD') %}
                             <a href="{{ path('app_update_product', {'id':product.id}) }}" class='btn btn-primary'>Update</a>
                             <a href="{{ path('app_product_delete', {'id':product.id}) }}" class='btn btn-danger'
-                               onclick="return confirm('Do you really want to remove this product? ' +
+                               onclick="return confirm('Do you really want to remove {{ product.name }}? ' +
                                'This action cannot be undone!')">
                                 Delete
                             </a>

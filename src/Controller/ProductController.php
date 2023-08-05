@@ -150,9 +150,7 @@ class ProductController extends AbstractController
     {
         $product = $doctrine->getRepository('App\Entity\Product')->find($id);
         $form = $this->createForm(ProductType::class, $product);
-
         $form->handleRequest($request);
-
         $uploadImg = $form['image']->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
